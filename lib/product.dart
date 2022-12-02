@@ -10,5 +10,5 @@ class Product {
   String get initial => name.substring(0, 1);
 
   // used in myShop._list
-  String get displayName => '($initial)$name.substring(1)}';
+  String get displayName => '($initial)${name.substring(1)}';
 }

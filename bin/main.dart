@@ -19,7 +19,8 @@ void main() {
     final line = stdin.readLineSync();
     if (line == 'a') {
       final product = myShop.chooseProduct();
-      if (product != null) {
+      if (product == null) {print('Not found.');}
+      else {
         product.addToCart();
         print(myShop.cart);
       }

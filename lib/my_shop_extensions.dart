@@ -11,9 +11,7 @@ extension MyShopExtensions on List<Product> {
   Product? chooseProduct() {
     stdout.write('Available products:\n$_list\nYour choice: ');
     final line = stdin.readLineSync();
-    firstWhere((product) => line == product.initial);
-    print('Not found');
-    return null;
+    return firstWhereOrNull((product) => line == product.initial);
   }
 
   // used in .cart and .checkout()
