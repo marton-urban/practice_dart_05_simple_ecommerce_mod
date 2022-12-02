@@ -1,39 +1,34 @@
 import 'dart:io';
+import 'package:test/product.dart';
 import 'package:collection/collection.dart';
-import 'package:test/product_extensions.dart';
 
-extension MyShopExtensions on List<Map<String, Object>?> {
+extension MyShopExtensions on List<Product> {
   // used in .chooseProduct()
   String get _list =>
-      map((product) => '${product!.displayName}: \$${product['price']}')
+      map((product) => '${product.displayName}: \$${product.price}')
           .join('\n');
 
-  Map<String, Object>? chooseProduct() {
+  Product? chooseProduct() {
     stdout.write('Available products:\n$_list\nYour choice: ');
     final line = stdin.readLineSync();
-    for (var product in this) {
-      if (product!.initial == line) {
-        return product;
-      }
-    }
+    firstWhere((product) => line == product.initial);
     print('Not found');
     return null;
   }
 
   // used in .cart and .checkout()
   bool get _cartIsEmpty =>
-      firstWhereOrNull((product) => product!['inCart'] != 0) == null;
+      firstWhereOrNull((product) => product.inCart != 0) == null;
 
   // used in .cart
-  String get _inCartDisplay => where((product) => product!['inCart'] as int > 0)
+  String get _inCartDisplay => where((product) => product.inCart > 0)
       .map((product) =>
-          '${product!['inCart']} x ${product['name']}: \$${(product['inCart'] as int) * (product['price'] as double)}')
+          '${product.inCart} x ${product.name}: \$${product.inCart * product.price}')
       .join('\n');
 
   // used in .cart and .checkout()
-  double get _inCartTotal => where((product) => product!['inCart'] as int > 0)
-      .map((product) =>
-          (product!['inCart'] as int) * (product['price'] as double))
+  double get _inCartTotal => where((product) => product.inCart > 0)
+      .map((product) => product.inCart * product.price)
       .reduce((value, element) => (value + element));
 
   String get cart {
